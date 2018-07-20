@@ -41,6 +41,11 @@ public class MainPresenter implements MainContract.Presenter{
 
 	}
 
+	@Override
+	public void onBookRowClicked(int position) {
+		mView.showBookDetails(mBooks.get(position).getId());
+	}
+
 	public int getBooksCount() {
 		return mBooks.size();
 	}
@@ -48,6 +53,9 @@ public class MainPresenter implements MainContract.Presenter{
 	public void onBindBookRowViewAtPosition(int position, BooksRowView  rowView) {
 		//Repository repo = repositories.get(position);
 		rowView.setTitle(mBooks.get(position).getTitle());
+		if(mBooks.get(position).getAuthors() != null && mBooks.get(position).getAuthors().length > 0) {
+			rowView.setTitle(mBooks.get(position).getAuthors()[0]);
+		}
 		rowView.setImageURL(mBooks.get(position).getImageURL());
 
 

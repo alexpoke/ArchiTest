@@ -40,14 +40,16 @@ class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolde
 		return mPresenter.getBooksCount();
 	}
 
-	public class BookViewHolder  extends RecyclerView.ViewHolder implements BooksRowView{
+	public class BookViewHolder  extends RecyclerView.ViewHolder implements BooksRowView, View.OnClickListener{
 		TextView titleTextView;
+		TextView authorTextView;
 		ImageView imageView;
 		String mImageURL;
 
 		public BookViewHolder(View itemView) {
 			super(itemView);
 			titleTextView = itemView.findViewById(R.id.bookTitleText);
+			authorTextView = itemView.findViewById(R.id.bookAuthorText);
 			imageView = itemView.findViewById(R.id.ivThumbnail);
 		}
 
@@ -57,8 +59,20 @@ class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolde
 		}
 
 		@Override
+		public void setAuthor(String author) {
+			authorTextView.setText(author);
+		}
+
+		@Override
 		public void setImageURL(String imageURL) {
 			mImageURL = imageURL;
+		}
+
+		@Override
+		public void onClick(View view) {
+			if(mPresenter != null){
+				mPresenter.onBookRowClicked(getAdapterPosition());
+			}
 		}
 	}
 }

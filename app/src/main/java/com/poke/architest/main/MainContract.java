@@ -8,9 +8,13 @@ public interface MainContract {
 
 		void showProgress();
 		void hideProgress();
+
+		void showBookDetails(String id);
 	}
 
 	interface Presenter{
 		void searchText(String text);
+
+		void onBookRowClicked(int position);
 	}
 }

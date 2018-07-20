@@ -113,4 +113,9 @@ public class MainListActivity extends AppCompatActivity implements MainContract.
 	public void hideProgress() {
 		mProgressBar.setVisibility(View.GONE);
 	}
+
+	@Override
+	public void showBookDetails(String id) {
+		Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+	}
 }
