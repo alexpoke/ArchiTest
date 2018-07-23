@@ -21,6 +21,8 @@ public class BooksRepository implements BooksDataSource {
 
 	private static BooksRepository INSTANCE = null;
 
+	private List<Book> mBooks;
+
 	public static BooksRepository getInstance(){
 		if(INSTANCE == null){
 			INSTANCE = new BooksRepository();
@@ -28,8 +30,6 @@ public class BooksRepository implements BooksDataSource {
 
 		return INSTANCE;
 	}
-
-
 
 	@Override
 	public void loadBooks(String searchKey, @NonNull final LoadBooksCallback callback) {
@@ -65,15 +65,18 @@ public class BooksRepository implements BooksDataSource {
 								}
 							}
 
-							book.setDescription(item.getJSONObject("volumeInfo").getString("description"));
+							if(item.getJSONObject("volumeInfo").has("description")) {
+								book.setDescription(item.getJSONObject("volumeInfo").getString("description"));
+							}
 
-							if( item.getJSONObject("volumeInfo").has("saleInfo") &&
-									item.getJSONObject("volumeInfo").getJSONObject("saleInfo").has("buyLink")){
-								book.setBuyLink(item.getJSONObject("volumeInfo").getJSONObject("saleInfo").getString("buyLink"));
+							if( item.has("saleInfo") &&
+									item.getJSONObject("saleInfo").has("buyLink")){
+								book.setBuyLink(item.getJSONObject("saleInfo").getString("buyLink"));
 							}
 							books.add(book);
 						}
 
+						mBooks = books;
 						callback.onBooksLoaded(books);
 					}catch (Exception e){
 						e.printStackTrace();
@@ -90,5 +93,23 @@ public class BooksRepository implements BooksDataSource {
 			}
 		});
 	}
+
+	@Override
+	public int getBookCount() {
+		//TODO maybe throw exception here
+		if(mBooks == null)
+			return 0;
+
+		return mBooks.size();
+	}
+
+	@Override
+	public Book getBookAt(int index) {
+		if(mBooks == null || mBooks.size() == 0)
+			return null;
+
+		return mBooks.get(index);
+	}
+
 
 }

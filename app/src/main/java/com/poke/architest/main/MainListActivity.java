@@ -1,5 +1,6 @@
 package com.poke.architest.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -18,9 +19,13 @@ import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
 import com.bumptech.glide.util.FixedPreloadSizeProvider;
 import com.poke.architest.R;
+import com.poke.architest.data.Book;
 import com.poke.architest.data.BooksRepository;
+import com.poke.architest.detail.DetailActivity;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,7 +102,7 @@ public class MainListActivity extends AppCompatActivity implements MainContract.
 	}
 
 	@Override
-	public void showList() {
+	public void showList(List<Book> books) {
 		tvEmpty.setVisibility(View.GONE);
 
 		mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -115,7 +120,10 @@ public class MainListActivity extends AppCompatActivity implements MainContract.
 	}
 
 	@Override
-	public void showBookDetails(String id) {
-		Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+	public void showBookDetails(int  index) {
+
+		Intent i = new Intent(this, DetailActivity.class);
+		i.putExtra(DetailActivity.BOOK_INDEX, index);
+		startActivity(i);
 	}
 }

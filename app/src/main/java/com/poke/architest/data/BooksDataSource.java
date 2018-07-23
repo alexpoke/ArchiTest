@@ -15,4 +15,6 @@ public interface BooksDataSource {
 
 	void loadBooks(String searchKey, @NonNull LoadBooksCallback callback);
 
+	int getBookCount();
+	Book getBookAt(int index);
 }

@@ -12,7 +12,7 @@ public class MainPresenter implements MainContract.Presenter{
 
 	private BooksRepository mRepository;
 
-	private List<Book> mBooks;
+//	private List<Book> mBooks;
 
 	public MainPresenter(BooksRepository repo, MainContract.View view){
 		mRepository = repo;
@@ -25,10 +25,10 @@ public class MainPresenter implements MainContract.Presenter{
 		mRepository.loadBooks(text, new BooksDataSource.LoadBooksCallback() {
 			@Override
 			public void onBooksLoaded(List<Book> books) {
-				mBooks = books;
+				//mBooks = books;
 
 				mView.hideProgress();
-				mView.showList();
+				mView.showList(books);
 			}
 
 			@Override
@@ -43,20 +43,27 @@ public class MainPresenter implements MainContract.Presenter{
 
 	@Override
 	public void onBookRowClicked(int position) {
-		mView.showBookDetails(mBooks.get(position).getId());
+		mView.showBookDetails(position);
 	}
 
 	public int getBooksCount() {
-		return mBooks.size();
+		return mRepository.getBookCount();
 	}
 
 	public void onBindBookRowViewAtPosition(int position, BooksRowView  rowView) {
 		//Repository repo = repositories.get(position);
-		rowView.setTitle(mBooks.get(position).getTitle());
-		if(mBooks.get(position).getAuthors() != null && mBooks.get(position).getAuthors().length > 0) {
-			rowView.setTitle(mBooks.get(position).getAuthors()[0]);
+		Book bookAtPos = mRepository.getBookAt(position);
+
+		if(bookAtPos == null){
+			//TODO handle this better
+			return;
 		}
-		rowView.setImageURL(mBooks.get(position).getImageURL());
+
+		rowView.setTitle(bookAtPos.getTitle());
+		if(bookAtPos.getAuthors() != null && bookAtPos.getAuthors().length > 0) {
+			rowView.setAuthor(bookAtPos.getAuthors()[0]);
+		}
+		rowView.setImageURL(bookAtPos.getImageURL());
 
 
 	}

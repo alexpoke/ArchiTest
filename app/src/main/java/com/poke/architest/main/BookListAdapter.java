@@ -51,6 +51,8 @@ class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolde
 			titleTextView = itemView.findViewById(R.id.bookTitleText);
 			authorTextView = itemView.findViewById(R.id.bookAuthorText);
 			imageView = itemView.findViewById(R.id.ivThumbnail);
+
+			itemView.setOnClickListener(this);
 		}
 
 		@Override
